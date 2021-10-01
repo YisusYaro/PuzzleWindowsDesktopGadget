@@ -1,6 +1,6 @@
-# PhaserAngularNest
+# PuzzleWindowsDesktopGadget
 
-_Template for developing app using phaser and angular_
+_Toucan puzzle_
 
 ### Installation 🔧
 
