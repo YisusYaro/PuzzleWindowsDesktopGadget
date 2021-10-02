@@ -138,7 +138,7 @@ export class Scene extends Phaser.Scene {
 
   create() {
 
-    //this.bg = this.add.image(this.scale.width / 2, this.scale.height / 2, 'bg');
+    this.bg = this.add.image(this.scale.width / 2, this.scale.height / 2, 'bg');
 
     this.setPieces();
 

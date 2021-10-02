@@ -1,0 +1,7 @@
+.frame {
+  background-color: aqua;
+  height: 117px;
+  width: 117px;
+  border: 10px solid transparent;
+  border-image: url(https://i0.wp.com/vinotecalacristaleria.es/wp-content/uploads/2014/03/madera.png?resize=199%2C300&ssl=1) 30 round;
+}
