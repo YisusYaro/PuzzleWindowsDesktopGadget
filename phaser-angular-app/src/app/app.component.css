@@ -3,5 +3,21 @@
   height: 117px;
   width: 117px;
   border: 10px solid transparent;
-  border-image: url(https://i0.wp.com/vinotecalacristaleria.es/wp-content/uploads/2014/03/madera.png?resize=199%2C300&ssl=1) 30 round;
+  border-image: url(../assets/Marco.png) 30 round;
+  position: relative;
+  top: 40px;
+  left: 550px;
+}
+
+.windows7 {
+  background-image: url(../assets/win7.jpg);
+  background-repeat: no-repeat;
+  height: 400px;
+  width: 728px;
+}
+
+@media (min-width: 600px) {
+  .phone {
+    display: none;
+  }
 }
