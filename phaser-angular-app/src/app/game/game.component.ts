@@ -17,17 +17,11 @@ export class GameComponent implements OnInit {
 
     this.config = {
       type: Phaser.AUTO,
-      width: 454,
-      height: 313,
+      width: 117,
+      height: 117,
       scene: [ Scene ],
       parent: 'gameContainer',
       pixelArt: true,
-      physics: {
-        default: 'arcade',
-        arcade: {
-          gravity: { y: 100 }
-        }
-      }
     };
     this.phaserGame = new Phaser.Game(this.config);
   }

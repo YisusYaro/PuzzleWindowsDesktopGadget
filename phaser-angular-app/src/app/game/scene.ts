@@ -1,132 +1,95 @@
 import Phaser from 'phaser';
 import { GameObjects } from 'phaser';
 import { Injectable } from '@angular/core';
+import { newArray } from '@angular/compiler/src/util';
 
 @Injectable()
 
 export class Scene extends Phaser.Scene {
 
-  bg?: GameObjects.Image;
-  myCharacter?: GameObjects.Image;
-  myCursor?: Phaser.Types.Input.Keyboard.CursorKeys;
-  myCombo?: Phaser.Input.Keyboard.KeyCombo;
-  character: string;
-
-
+  private bg?: GameObjects.Image;
+  private toucanNames: string[];
+  matrixPositions: { x: number, y: number, toucanPiece?: GameObjects.Image }[][];
 
   constructor() {
     super({ key: "Bootloader" });
-    this.character = "demon";
+    this.matrixPositions = new Array(3);
+    this.matrixPositions[0] = [{ x: 39 / 2, y: 39 / 2 }, { x: 39 + (39 / 2), y: 39 / 2 }, { x: 78 + (39 / 2), y: 39 / 2 }];
+    this.matrixPositions[1] = [{ x: 39 / 2, y: 39 + (39 / 2) }, { x: 39 + (39 / 2), y: 39 + (39 / 2) }, { x: 78 + (39 / 2), y: 39 + (39 / 2) }];
+    this.matrixPositions[2] = [{ x: 39 / 2, y: 78 + (39 / 2) }, { x: 39 + (39 / 2), y: 78 + (39 / 2) }, { x: 78 + (39 / 2), y: 78 + (39 / 2) }];
+    this.toucanNames = ['toucan1', 'toucan2', 'toucan3', 'toucan4', 'toucan5', 'toucan6', 'toucan7', 'toucan8', 'space'];
   }
 
-  ngOnInit(): void {
-  }
+
 
   preload() {
     this.load.path = "../../assets/";
-    this.load.image('bg', 'bg.png');
-    this.load.image('demon', 'demon.png');
-    this.load.image('knight', 'knight.png');
+    this.load.image('toucan1', '1.png');
+    this.load.image('toucan2', '2.png');
+    this.load.image('toucan3', '3.png');
+    this.load.image('toucan4', '4.png');
+    this.load.image('toucan5', '5.png');
+    this.load.image('toucan6', '6.png');
+    this.load.image('toucan7', '7.png');
+    this.load.image('toucan8', '8.png');
+    this.load.image('space', '10.png');
   }
 
-  getDistance(x1: number, y1: number, x2: number, y2: number) {
-    return Math.hypot(x2 - x1, y2 - y1);
-  }
-
-  listenCursor(character: any, characterCursor: any) {
-    if (characterCursor.left.isDown) {
-      character.x--;
-      character.flipX = true;
+  shuffle(array: any) {
+    let currentIndex = array.length, randomIndex;
+    while (currentIndex != 0) {
+      randomIndex = Math.floor(Math.random() * currentIndex);
+      currentIndex--;
+      [array[currentIndex], array[randomIndex]] = [
+        array[randomIndex], array[currentIndex]];
     }
-    if (characterCursor.right.isDown) {
-      character.x++;
-      character.flipX = false;
-    }
-    if (characterCursor.up.isDown) {
-      character.y--;
-    }
-    if (characterCursor.down.isDown) {
-      character.y++;
-    }
+    return array;
   }
 
-  setKeyboard() {
-    const keyCodes = Phaser.Input.Keyboard.KeyCodes;
 
-    this.myCursor = this.input.keyboard.createCursorKeys();
-
-    this.myCombo = this.input.keyboard.createCombo(
-      [keyCodes.B, keyCodes.N, keyCodes.M],
-      { resetOnMatch: true }
-    );
-
-    this.input.keyboard.on('keycombomatch', (keyCombo: Phaser.Input.Keyboard.KeyCombo) => {
-
-      //event for demonCombo
-      if (this.arraysAreIdentical([keyCodes.B, keyCodes.N, keyCodes.M], keyCombo.keyCodes)) {
-        this.setTintCharacter(this.myCharacter!);
-      }
-
-    });
-  }
-
-  async setTintCharacter(character: GameObjects.Image) {
-    character.setTint(0xff0000);
-    await this.sleep(200);
-    character.setTint(0xffffff);
-    await this.sleep(200);
-    character.setTint(0xff0000);
-    await this.sleep(100);
-    character.setTint(0xffffff);
-    await this.sleep(100);
-    character.setTint(0xff0000);
-    await this.sleep(50);
-    character.setTint(0xffffff);
-    await this.sleep(50);
-    character.setTint(0xff0000);
-    await this.sleep(10);
-    character.setTint(0xffffff);
-    await this.sleep(10);
-    character.setTint(0xff0000);
-    await this.sleep(10);
-    character.setTint(0xffffff);
-    await this.sleep(10);
-  }
-
-  sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-  arraysAreIdentical(arr1: number[], arr2: number[]) {
-    if (arr1.length !== arr2.length) return false;
-    for (var i = 0, len = arr1.length; i < len; i++) {
-      if (arr1[i] !== arr2[i]) {
-        return false;
+  setPieces() {
+    let toucanNamesShuffled = this.shuffle(this.toucanNames);
+    let toucanNameIndex = 0;
+    for (let i = 0; i < 3; i++) {
+      for (let j = 0; j < 3; j++) {
+        if(toucanNamesShuffled[toucanNameIndex]!='space'){
+          this.matrixPositions[i][j].toucanPiece = this.add.image(this.matrixPositions[i][j].x, this.matrixPositions[i][j].y, toucanNamesShuffled[toucanNameIndex]).setInteractive();
+          this.input.setDraggable(this.matrixPositions[i][j].toucanPiece!);
+        }
+        else{
+          this.matrixPositions[i][j].toucanPiece = this.add.image(this.matrixPositions[i][j].x, this.matrixPositions[i][j].y, toucanNamesShuffled[toucanNameIndex]);
+        }
+        this.matrixPositions[i][j].toucanPiece!.setDepth(0);
+        toucanNameIndex++;
       }
     }
-    return true;
+
+
+
   }
 
   create() {
 
-    //keyboard
-    this.setKeyboard();
-    //bg
+    this.setPieces();
 
-    this.bg = this.add.image(this.scale.width / 2, this.scale.height / 2, 'bg');
-    //characters
-    if (this.character! == 'demon') {
-      this.myCharacter = this.add.image(100, 250, 'demon');
-      this.myCharacter.scale = 2;
-    }
-    if (this.character! == 'knight') {
-      this.myCharacter = this.add.image(200, 250, 'knight');
-      this.myCharacter.scale = 2;
-    }
+    const events = Phaser.Input.Events;
+
+    this.input.on(events.DRAG_START, (pointer: Phaser.Input. Pointer, toucanPiece: GameObjects.Image) => {
+      console.log(pointer.position);
+      toucanPiece.setDepth(100);
+    });
+
+    this.input.on(events.DRAG, (pointer: any, obj: any, dragX: any, dragY: any) => {
+      obj.x = dragX;
+      obj.y = dragY;
+    });
+
+    this.input.on(events.DRAG_END, (pointer: any, toucanPiece: GameObjects.Image, dragX: any, dragY: any) => {
+      toucanPiece.setDepth(0);
+    });
   }
 
   update(time: number, delta: number) {
-    this.listenCursor(this.myCharacter, this.myCursor);
 
   }
 
