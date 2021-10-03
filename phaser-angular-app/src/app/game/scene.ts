@@ -36,7 +36,8 @@ export class Scene extends Phaser.Scene {
     this.load.image('space', '10.png');
   }
 
-  shuffle(array: any) {
+  shuffle(array: string[]) {
+
     let currentIndex = array.length, randomIndex;
     while (currentIndex != 0) {
       randomIndex = Math.floor(Math.random() * currentIndex);
@@ -151,19 +152,19 @@ export class Scene extends Phaser.Scene {
       toucanPiece.setDepth(100);
     });
 
-    this.input.on(events.DRAG, (pointer: any, obj: any, dragX: any, dragY: any) => {
+    this.input.on(events.DRAG, (pointer: Phaser.Input.Pointer, obj: GameObjects.Image, dragX: number, dragY: number) => {
       obj.x = dragX;
       obj.y = dragY;
     });
 
-    this.input.on(events.DRAG_END, (pointer: any, toucanPiece: GameObjects.Image, dropZone: any) => {
+    this.input.on(events.DRAG_END, (pointer: Phaser.Input.Pointer, toucanPiece: GameObjects.Image, dropZone: boolean) => {
       if (!dropZone) {
         toucanPiece.x = toucanPiece.input.dragStartX;
         toucanPiece.y = toucanPiece.input.dragStartY;
       }
     });
 
-    this.input.on(events.DROP, (pointer: any, toucanPiece: GameObjects.Image, dropZone: any) => {
+    this.input.on(events.DROP, (pointer: Phaser.Input.Pointer, toucanPiece: GameObjects.Image, dropZone: GameObjects.Image) => {
 
       let x = toucanPiece.input.dragStartX;
       let y = toucanPiece.input.dragStartY;
