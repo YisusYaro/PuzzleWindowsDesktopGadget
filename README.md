@@ -34,7 +34,7 @@ docker exec -it angular-container ng serve --host=0.0.0.0 --disable-host-check
 ## Devs ✒️
 
 * **Jesús Alejandro Yahuitl Rodríguez** - *Dev* - [YisusYaro](https://github.com/YisusYaro/)
-
+* **Isaac Villa Luna** - *Dev* - [Villa13](https://github.com/Villa13/)
 
 ## License 📄
 
