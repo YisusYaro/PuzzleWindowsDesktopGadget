@@ -1,5 +1,9 @@
 <div class="windows7">
-  <router-outlet>
+  <img *ngIf="showStartWindow" class="window" src="../assets/Ventana.png">
+  <img *ngIf="showStartWindow" (click)="start()" class="ok" src="../assets/botonOk.png">
+  <img *ngIf="showRestartWindow" class="window" src="../assets/ventanaR.png">
+  <img *ngIf="showRestartWindow" (click)="restart()" class="ok" src="../assets/botonOk.png">
+  <router-outlet *ngIf="showGame">
     <div class="frame" id="gameContainer"></div>
   </router-outlet>
 </div>

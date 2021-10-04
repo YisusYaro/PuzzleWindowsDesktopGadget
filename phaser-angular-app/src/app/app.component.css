@@ -9,6 +9,20 @@
   left: 550px;
 }
 
+.window {
+  height: 117px;
+  position: relative;
+  top: 150px;
+  left: 200px;
+}
+
+.ok {
+  height: 20px;
+  position: relative;
+  top: 140px;
+  left: 120px;
+}
+
 .windows7 {
   background-image: url(../assets/win7.jpg);
   background-repeat: no-repeat;

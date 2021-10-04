@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 import { GameObjects } from 'phaser';
 import { Injectable } from '@angular/core';
-import { newArray } from '@angular/compiler/src/util';
+import { RestartService } from '../services/restart.service';
 
 @Injectable()
 
@@ -10,6 +10,7 @@ export class Scene extends Phaser.Scene {
   private bg?: GameObjects.Image;
   private toucanNames: string[];
   matrixPositions: { x: number, y: number, toucanPiece?: GameObjects.Image }[][];
+  private woodSound?: any;
 
   constructor() {
     super({ key: "Bootloader" });
@@ -18,12 +19,19 @@ export class Scene extends Phaser.Scene {
     this.matrixPositions[1] = [{ x: 39 / 2, y: 39 + (39 / 2) }, { x: 39 + (39 / 2), y: 39 + (39 / 2) }, { x: 78 + (39 / 2), y: 39 + (39 / 2) }];
     this.matrixPositions[2] = [{ x: 39 / 2, y: 78 + (39 / 2) }, { x: 39 + (39 / 2), y: 78 + (39 / 2) }, { x: 78 + (39 / 2), y: 78 + (39 / 2) }];
     this.toucanNames = ['toucan00', 'toucan01', 'toucan02', 'toucan10', 'toucan11', 'toucan12', 'toucan20', 'toucan21', 'space'];
+
+    RestartService.instance.restart.subscribe(()=>{
+      this.scene.restart();
+    });
+
   }
 
 
 
   preload() {
     this.load.path = "../../assets/";
+
+    //images
     this.load.image('bg', 'fondo.png');
     this.load.image('toucan00', '1.png');
     this.load.image('toucan01', '2.png');
@@ -34,6 +42,9 @@ export class Scene extends Phaser.Scene {
     this.load.image('toucan20', '7.png');
     this.load.image('toucan21', '8.png');
     this.load.image('space', '10.png');
+
+    //audio
+    this.load.audio('wood', 'wood.mp3');
   }
 
   shuffle(array: string[]) {
@@ -145,16 +156,18 @@ export class Scene extends Phaser.Scene {
 
     this.defineDraggable();
 
+    this.woodSound = this.sound.add('wood', { volume: 0.5, loop: false });
+
     const events = Phaser.Input.Events;
 
     this.input.on(events.DRAG_START, (pointer: Phaser.Input.Pointer, toucanPiece: GameObjects.Image) => {
-
       toucanPiece.setDepth(100);
     });
 
     this.input.on(events.DRAG, (pointer: Phaser.Input.Pointer, obj: GameObjects.Image, dragX: number, dragY: number) => {
       obj.x = dragX;
       obj.y = dragY;
+      
     });
 
     this.input.on(events.DRAG_END, (pointer: Phaser.Input.Pointer, toucanPiece: GameObjects.Image, dropZone: boolean) => {
@@ -168,6 +181,8 @@ export class Scene extends Phaser.Scene {
 
       let x = toucanPiece.input.dragStartX;
       let y = toucanPiece.input.dragStartY;
+
+      this.woodSound.play();
 
       toucanPiece.setDepth(0);
       toucanPiece.x = dropZone.x;
@@ -198,7 +213,7 @@ export class Scene extends Phaser.Scene {
     }
 
     if(correctToucanPieces==8){
-      alert('ganaste');
+      RestartService.instance.showRestartWindow.emit();
     }
   }
 
