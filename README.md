@@ -2,6 +2,12 @@
 
 _Toucan puzzle_
 
+
+## Play now 🚀
+
+[PuzzleWindowsDesktopGadget](https://p05.jesusyaro.repl.co/)
+
+
 ### Installation 🔧
 
 ```
@@ -19,12 +25,6 @@ docker-compose up -d
 ```
 docker exec -it angular-container ng serve --host=0.0.0.0 --disable-host-check
 ```
-
-## Open your browser 🚀
-
-[localhost:4200](http://localhost:4200)
-
-
 
 ## Built with 🛠️
 
